@@ -1,0 +1,5 @@
+// TEST 8: Redeclaration of variables
+// test8.txt - Should report errors
+chal x asti 10;
+chal x asti 20;
+pradarshy(x);

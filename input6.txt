@@ -1,0 +1,6 @@
+// TEST 6: Lexical errors
+// test6.txt - Should report lexical errors
+chal x asti 10;
+chal @ asti 20;
+chal y asti "string";
+pradarshy(x);

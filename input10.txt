@@ -1,0 +1,12 @@
+// TEST 10: Complex expressions
+// test10.txt - Should compile successfully
+chal a asti 2;
+chal b asti 3;
+chal c asti 4;
+chal d asti 5;
+chal result;
+
+result asti ((a samyog b) gunan (c viyog d)) samyog d;
+pradarshy(result);
+result asti a samyog b gunan c viyog d;
+pradarshy(result);

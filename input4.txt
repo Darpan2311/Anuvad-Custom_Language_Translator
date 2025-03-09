@@ -1,0 +1,6 @@
+// TEST 4: Undefined variables
+// test4.txt - Should report warnings/errors
+chal x asti 10;
+pradarshy(y);
+z asti 30;
+pradarshy(z);

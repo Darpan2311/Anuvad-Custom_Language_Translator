@@ -1,0 +1,21 @@
+// TEST 2: If-else statements
+// test2.txt - Should compile successfully
+
+chal x asti 10;
+chal y asti 20;
+chal result;
+yada (x < y) {
+    result asti 1;
+} anyatha {
+    result asti 0;
+} samapti
+
+pradarshy(result);
+
+yada (x > y) {
+    result asti 1;
+} anyatha {
+    result asti 0;
+} samapti
+
+pradarshy(result);

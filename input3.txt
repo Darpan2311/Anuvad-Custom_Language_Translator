@@ -1,0 +1,6 @@
+// TEST 3: Missing semicolon errors
+// test3.txt - Should report errors
+chal x asti 10
+chal y asti 20;
+x asti x samyog 5
+pradarshy(x);

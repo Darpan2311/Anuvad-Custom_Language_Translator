@@ -1,0 +1,18 @@
+// TEST 9: Nested if statements
+// test9.txt - Should compile successfully
+chal x asti 10;
+chal y asti 20;
+chal z asti 15;
+chal result;
+
+yada (x < y) {
+    yada (y > z) {
+        result asti 1;
+    } anyatha {
+        result asti 2;
+    } samapti
+} anyatha {
+    result asti 3;
+} samapti
+
+pradarshy(result);

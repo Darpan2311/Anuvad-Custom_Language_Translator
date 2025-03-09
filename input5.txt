@@ -1,0 +1,7 @@
+// TEST 5: Division by zero
+// test5.txt - Should report runtime error
+chal x asti 10;
+chal y asti 0;
+chal result;
+result asti x bhag y;
+pradarshy(result);

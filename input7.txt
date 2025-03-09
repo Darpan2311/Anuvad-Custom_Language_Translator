@@ -1,0 +1,12 @@
+// TEST 7: Mixed expression evaluation
+// test7.txt - Should compile successfully
+chal a asti 5;
+chal b asti 10;
+chal c asti 2;
+chal result;
+result asti a samyog b gunan c viyog b bhag a;
+pradarshy(result);
+result asti (a samyog b) gunan c;
+pradarshy(result);
+result asti a samyog (b gunan c);
+pradarshy(result);
