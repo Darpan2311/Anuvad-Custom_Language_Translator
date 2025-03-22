@@ -1,0 +1,120 @@
+%{
+#include "parser.tab.h"
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+#define MAX_ERRORS 100
+
+typedef struct {
+    char message[256];
+    int line;
+    char token[64];
+} LexicalError;
+
+LexicalError lexical_errors[MAX_ERRORS];
+int lex_error_count = 0;
+
+void report_lexical_error(const char* token, int line, const char* message) {
+    if (lex_error_count < MAX_ERRORS) {
+        snprintf(lexical_errors[lex_error_count].message, 256, "%s", message);
+        lexical_errors[lex_error_count].line = line;
+        snprintf(lexical_errors[lex_error_count].token, 64, "%s", token);
+        lex_error_count++;
+    }
+}
+
+void report_lexical_errors() {
+    if (lex_error_count > 0) {
+        printf("\n--- Lexical Errors ---\n");
+        for (int i = 0; i < lex_error_count; i++) {
+            printf("Line %d: %s '%s'\n", 
+                   lexical_errors[i].line, 
+                   lexical_errors[i].message,
+                   lexical_errors[i].token);
+        }
+        printf("Total lexical errors: %d\n\n", lex_error_count);
+    }
+}
+%}
+
+%option yylineno
+%option noyywrap
+
+%%
+
+\n              { /* Track new lines */ }
+[ \t\r]+        { /* Ignore whitespace */ }
+
+"chal"         { return VAR; }
+"pradarshy"    { return PRINT; }
+"yada"         { return IF; }
+"anyatha"      { printf("Lexer: Found token 'anyatha' (ELSE)\n"); return ELSE; }
+"samapti"      { return END; }
+
+"=="          { return EQ; }
+"!="          { return NE; }
+"<="          { return LE; }
+">="          { return GE; }
+"<"           { return LT; }
+">"           { return GT; }
+"asti"        { return ASSIGN; }
+
+"("           { return LPAREN; }
+")"           { return RPAREN; }
+"{"           { return LBRACE; }
+"}"           { return RBRACE; }
+";"           { return SEMI; }
+
+"samyog"      { return PLUS; }
+"viyog"       { return MINUS; }
+"gunan"       { return MUL; }
+"bhag"        { return DIV; }
+
+[0-9]+(\.[0-9]+)?    { 
+    printf("Lexer: Found token '%s'\n", yytext);
+    yylval.num = atof(yytext); 
+    return NUMBER; 
+}
+
+[a-zA-Z_][a-zA-Z0-9_]* { 
+    printf("Lexer: Found token '%s'\n", yytext);
+    yylval.str = strdup(yytext); 
+    return IDENTIFIER; 
+}
+
+"//"[^\n]*\n   { 
+    printf("Lexer: Skipping comment\n");
+    /* Skip single-line comments */ }
+
+"/*"           {
+    printf("Lexer: Starting multi-line comment\n");
+    /* Handle multi-line comments */
+    int c;
+    while((c = input()) != 0) {
+        if(c == '*') {
+            if((c = input()) == '/')
+                break;
+            unput(c);
+        }
+        else if(c == '\n') {
+            /* Count lines within comments */
+        }
+    }
+    if(c == 0) {
+        report_lexical_error("/*", yylineno, "Unterminated comment");
+        return ERROR_TOKEN;
+    }
+}
+
+.          { 
+     printf("Lexer: Invalid token '%s'\n", yytext); 
+    report_lexical_error(yytext, yylineno, "Invalid token");
+    return ERROR_TOKEN;
+}
+
+%%
+
+/* This section intentionally left empty.
+   The report_lexical_errors function is defined in the top section
+   and will be used by the main parser. */
