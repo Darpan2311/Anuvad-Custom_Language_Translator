@@ -108,28 +108,6 @@ mycompiler.exe < input.txt
 ```
 ✅ The output will be displayed on the terminal.
 
----
-
-## 📝 **Usage**
-
-1. **Input Code Format**
-```
-start
-    declare x as integer
-    set x to 5
-    if x is greater than 3 then
-        print "X is large"
-    else
-        print "X is small"
-    end if
-stop
-```
-
-2. **Run the Code**
-```
-mycompiler.exe < input.txt
-```
-
 ## 📊 **Transition Diagram**
 
 Here’s the transition diagram explaining token identification and parsing:
@@ -138,20 +116,6 @@ Here’s the transition diagram explaining token identification and parsing:
 
 ---
 
-
-## 📸 **Input-Output Examples**
-
-
-
 ## 📷 **Screenshots and Results**
-
-
-
-## 🎯 **Project Workflow**
-
-1. **Lexical Analysis:** Tokenizes the input to identify keywords, operators, and variables.
-2. **Syntax Analysis:** Parses the tokenized input to check grammar and structure.
-3. **Semantic Analysis:** Ensures logical correctness and generates output.
-
----
+![Input Output](./o.jpg)
 
