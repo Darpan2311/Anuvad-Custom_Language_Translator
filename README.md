@@ -134,13 +134,6 @@ stop
 mycompiler.exe < input.txt
 ```
 
-3. **Sample Output**
-```
-X is large
-```
-
----
-
 ## 📊 **Transition Diagram**
 
 Here’s the transition diagram explaining token identification and parsing:
@@ -149,88 +142,14 @@ Here’s the transition diagram explaining token identification and parsing:
 
 ---
 
-## 🔎 **Debugging Steps**
-
-### 🕵️ **Check Version Details**
-To verify if the tools are installed:
-```bash
-gcc --version
-bison --version
-flex --version
-```
-
----
-
-### 🛠️ **Run Flex and Bison with Debug Options**
-1. **Flex Debug Mode**
-```bash
-flex -d lexer.l
-```
-2. **Bison Debug Mode**
-```bash
-bison -t -d parser.y
-```
-
----
-
-### 🚩 **Common Errors and Fixes**
-- `flex: command not found` → Add Flex to PATH or reinstall.
-- `gcc: fatal error` → Check if MinGW is installed and added to PATH.
-- `undefined reference to yylex()` → Flex and Bison files may not be compiled in the correct order.
-
----
 
 ## 📸 **Input-Output Examples**
 
-### 🎉 **Example 1: Basic Arithmetic**
-**Input:**
-```
-start
-    declare a as integer
-    set a to 10
-    print "Value of A is ", a
-stop
-```
-**Output:**
-```
-Value of A is 10
-```
 
-### 🎉 **Example 2: Conditional Statement**
-**Input:**
-```
-start
-    declare num as integer
-    set num to 20
-    if num is equal to 20 then
-        print "Number is 20"
-    end if
-stop
-```
-**Output:**
-```
-Number is 20
-```
-
----
-
-## 📚 **Language Specifications**
-- **Case Sensitivity:** Case-insensitive.
-- **Keywords:** `start`, `stop`, `declare`, `set`, `if`, `else`, `print`
-- **Data Types:** `integer`, `string`
-- **Operators:** `is equal to`, `is greater than`, `is less than`
-
----
 
 ## 📷 **Screenshots and Results**
 
-### 🎉 **Successful Execution**
-![Execution Result](./images/success_result.png)
 
-### ⚠️ **Error Handling**
-![Error Example](./images/error_example.png)
-
----
 
 ## 🎯 **Project Workflow**
 
@@ -240,16 +159,3 @@ Number is 20
 
 ---
 
-## 💡 **Contributing**
-If you'd like to contribute to **Anuvad**, feel free to fork the repo and submit a pull request. Feedback and suggestions are always welcome!
-
----
-
-## 📧 **Contact**
-For any questions or suggestions, contact:
-- [Your Name](mailto:your.email@example.com)
-- GitHub: [@yourusername](https://github.com/yourusername)
-
----
-
-✅ **Done!** Now you can add your input-output photos and transition diagrams to the `images` folder and update the file paths accordingly. Let me know if you need help with generating diagrams or sample screenshots! 😊
