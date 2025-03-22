@@ -1,7 +1,3 @@
-Here’s the updated version of your **Anuvad** `README.md` with the Windows setup and debugging steps included:
-
----
-
 ## 📚 **Anuvad – Translator for Layman-Friendly Language**
 
 **Anuvad** is a custom language translator designed to simplify complex programming concepts for layman users by translating high-level instructions into executable code. The project covers:
