@@ -60,25 +60,24 @@ extern int yydebug;
     PRINT = 261,                   /* PRINT  */
     IF = 262,                      /* IF  */
     ELSE = 263,                    /* ELSE  */
-    WHILE = 264,                   /* WHILE  */
-    END = 265,                     /* END  */
-    EQ = 266,                      /* EQ  */
-    NE = 267,                      /* NE  */
-    LE = 268,                      /* LE  */
-    GE = 269,                      /* GE  */
-    LT = 270,                      /* LT  */
-    GT = 271,                      /* GT  */
-    ASSIGN = 272,                  /* ASSIGN  */
-    PLUS = 273,                    /* PLUS  */
-    MINUS = 274,                   /* MINUS  */
-    MUL = 275,                     /* MUL  */
-    DIV = 276,                     /* DIV  */
-    LPAREN = 277,                  /* LPAREN  */
-    RPAREN = 278,                  /* RPAREN  */
-    LBRACE = 279,                  /* LBRACE  */
-    RBRACE = 280,                  /* RBRACE  */
-    SEMI = 281,                    /* SEMI  */
-    ERROR_TOKEN = 282              /* ERROR_TOKEN  */
+    END = 264,                     /* END  */
+    EQ = 265,                      /* EQ  */
+    NE = 266,                      /* NE  */
+    LE = 267,                      /* LE  */
+    GE = 268,                      /* GE  */
+    LT = 269,                      /* LT  */
+    GT = 270,                      /* GT  */
+    ASSIGN = 271,                  /* ASSIGN  */
+    PLUS = 272,                    /* PLUS  */
+    MINUS = 273,                   /* MINUS  */
+    MUL = 274,                     /* MUL  */
+    DIV = 275,                     /* DIV  */
+    LPAREN = 276,                  /* LPAREN  */
+    RPAREN = 277,                  /* RPAREN  */
+    LBRACE = 278,                  /* LBRACE  */
+    RBRACE = 279,                  /* RBRACE  */
+    SEMI = 280,                    /* SEMI  */
+    ERROR_TOKEN = 281              /* ERROR_TOKEN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -87,12 +86,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 147 "yacc.y"
+#line 88 "yacc.y"
 
     double num;
     char *str;
 
-#line 96 "yacc.tab.h"
+#line 95 "yacc.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

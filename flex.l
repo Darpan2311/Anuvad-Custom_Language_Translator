@@ -24,7 +24,7 @@ void report_lexical_error(const char* token, int line, const char* message) {
     }
 }
 
-void report_lexical_errors() {
+int report_lexical_errors() {
     if (lex_error_count > 0) {
         printf("\n--- Lexical Errors ---\n");
         for (int i = 0; i < lex_error_count; i++) {
@@ -33,8 +33,8 @@ void report_lexical_errors() {
                    lexical_errors[i].message,
                    lexical_errors[i].token);
         }
-        printf("Total lexical errors: %d\n\n", lex_error_count);
     }
+    return lex_error_count;
 }
 %}
 
@@ -50,7 +50,6 @@ void report_lexical_errors() {
 "pradarshy"    { return PRINT; }
 "yada"         { return IF; }
 "anyatha"      { return ELSE; }
-"yawat"        { return WHILE; }
 "samapti"      { return END; }
 
 "=="          { return EQ; }
@@ -82,10 +81,9 @@ void report_lexical_errors() {
     return IDENTIFIER; 
 }
 
-"//"[^\n]*\n   { /* Skip single-line comments */ }
+"//"[^\n]*\n   {  }
 
-"/*"           {
-    /* Handle multi-line comments */
+"/*" {
     int c;
     while((c = input()) != 0) {
         if(c == '*') {
@@ -94,7 +92,6 @@ void report_lexical_errors() {
             unput(c);
         }
         else if(c == '\n') {
-            /* Count lines within comments */
         }
     }
     if(c == 0) {
@@ -103,13 +100,9 @@ void report_lexical_errors() {
     }
 }
 
-.          { 
+. { 
     report_lexical_error(yytext, yylineno, "Invalid token");
     return ERROR_TOKEN;
 }
 
 %%
-
-/* This section intentionally left empty.
-   The report_lexical_errors function is defined in the top section
-   and will be used by the main parser. */
