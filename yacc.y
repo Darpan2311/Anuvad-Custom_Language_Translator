@@ -2,8 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
-#include <assert.h>
+
 
 extern int yylineno;
 extern int report_lexical_errors();  
@@ -11,7 +10,6 @@ extern char *yytext;
 extern int yylex();
 extern FILE *yyin;
 extern int yyparse(void);
-
 
 int error_count = 0;
 #define MAX_ERRORS 20
@@ -50,7 +48,6 @@ void setVariableValue(char *name, double value) {
     symTable[symCount].initialized = 1;
     symTable[symCount].declared = 0;
     symCount++;
-
 }
 
 void declareVariable(char *name, int initialized, double value) {
@@ -68,8 +65,7 @@ void declareVariable(char *name, int initialized, double value) {
             }
             return;
         }
-    }
-    
+    } 
     strcpy(symTable[symCount].name, name);
     symTable[symCount].declared = 1;
     symTable[symCount].initialized = initialized;
@@ -121,7 +117,7 @@ statement:
     | if_stmt
     | error SEMI { yyerrok; } 
     | expression error { yyerror("Missing semicolon at end of statement"); }
-     ERROR_TOKEN { yyerror("Lexical error detected"); }
+    | ERROR_TOKEN { yyerror("Lexical error detected"); }
     ;
 
 declaration:
@@ -144,13 +140,6 @@ declaration:
 assignment:
     IDENTIFIER ASSIGN expression SEMI { 
         if (!skip) {
-            int found = 0;
-            for (int i = 0; i < symCount; i++) {
-                if (strcmp(symTable[i].name, $1) == 0) {
-                    found = 1;
-                    break;
-                }
-            }
             setVariableValue($1, $3);
             printf("Assign %s = %f\n", $1, $3);
         }
@@ -248,8 +237,6 @@ void yyerror(const char *s) {
         curr_line++;
     }
     if (curr_line == yylineno && fgets(line, sizeof(line), yyin)) {
-       
-
         char *pos_in_line = strstr(line, yytext);
         if (pos_in_line) {
             int offset = pos_in_line - line;
@@ -257,9 +244,7 @@ void yyerror(const char *s) {
             printf("\n");
         }
     }
-
     fseek(yyin, pos, SEEK_SET);
-
     if (error_count >= MAX_ERRORS) {
         fprintf(stderr, "Too many errors, aborting compilation.\n");
         exit(1);
@@ -275,15 +260,15 @@ int main(int argc, char *argv[]) {
         }
     }
     
-    int result = yyparse();
+    yyparse();
     
-    int lex_errors=report_lexical_errors();
+    int lex_errors = report_lexical_errors();
     
     if (error_count > 0) {
-        printf("\nCompilation failed with %d lexical errors %d syntax errors",lex_errors,error_count);
+        printf("\nCompilation failed with %d lexical errors and %d syntax errors", lex_errors, error_count);
     } else {
         printf("\nCompilation successful.\n");
     }
     
-    return (error_count+lex_errors > 0) ? 1 : 0;
+    return (error_count + lex_errors > 0) ? 1 : 0;
 }
