@@ -1,6 +1,6 @@
 ## 📚 **Anuvad – Translator for Layman-Friendly Language**
 
-**Anuvad** is a custom language translator designed to simplify complex programming concepts for layman users by translating high-level instructions into executable code. The project covers:
+**Anuvad** is a custom language translator designed to simplify programming concepts for  users by translating instructions into executable code. The project covers:
 
 - Custom language syntax with defined grammar rules.
 - Lexical and syntax analysis using YACC and Lex.
