@@ -39,12 +39,12 @@ int report_lexical_errors() {
 %}
 
 %option yylineno
-%option noyywrap
+
 
 %%
 
-\n              { /* Track new lines */ }
-[ \t\r]+        { /* Ignore whitespace */ }
+\n              { }
+[ \t\r]+        { }
 
 "chal"         { return VAR; }
 "pradarshy"    { return PRINT; }
@@ -83,21 +83,10 @@ int report_lexical_errors() {
 
 "//"[^\n]*\n   {  }
 
-"/*" {
-    int c;
-    while((c = input()) != 0) {
-        if(c == '*') {
-            if((c = input()) == '/')
-                break;
-            unput(c);
-        }
-        else if(c == '\n') {
-        }
-    }
-    if(c == 0) {
-        report_lexical_error("/*", yylineno, "Unterminated comment");
-        return ERROR_TOKEN;
-    }
+"/*"([^*]|\*+[^*/])*\*+"/"   {  }
+"/*"([^*]|\*+[^*/])*         {
+    report_lexical_error("/*", yylineno, "Unterminated comment");
+    return ERROR_TOKEN;
 }
 
 . { 
@@ -106,3 +95,7 @@ int report_lexical_errors() {
 }
 
 %%
+
+int yywrap() {
+    return 1;
+}

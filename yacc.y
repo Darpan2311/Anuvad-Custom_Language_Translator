@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 extern int yylineno;
 extern int report_lexical_errors();  
 extern char *yytext;
@@ -11,6 +10,7 @@ extern int yylex();
 extern FILE *yyin;
 extern int yyparse(void);
 
+void yyerror(const char *s);
 int error_count = 0;
 #define MAX_ERRORS 20
 
@@ -29,8 +29,7 @@ double getVariableValue(char *name) {
             return symTable[i].value;
         }
     } 
-    fprintf(stderr, "Error: Undefined variable '%s' at line %d\n", name, yylineno);
-    error_count++;
+    yyerror("Undefined variable"); 
     return 0.0; 
 }
 
@@ -77,7 +76,6 @@ int skip = 0;
 int if_result = 0;
 int saved_skip = 0;
 
-void yyerror(const char *s);
 
 %}
 
@@ -115,25 +113,30 @@ statement:
     | assignment
     | print_stmt
     | if_stmt
-    | error SEMI { yyerrok; } 
-    | expression error { yyerror("Missing semicolon at end of statement"); }
-    | ERROR_TOKEN { yyerror("Lexical error detected"); }
+    | error SEMI { yyerrok; }
+    | expression SEMI{    } 
+    | expression { yyerror("Missing semicolon at end of statement"); }
     ;
 
 declaration:
-    VAR IDENTIFIER ASSIGN expression SEMI { 
+    VAR IDENTIFIER ASSIGN expression SEMI{ 
         if (!skip) {
             declareVariable($2, 1, $4);
             printf("Declare %s = %f\n", $2, $4);
         }
-        free($2);
     }
     | VAR IDENTIFIER SEMI { 
         if (!skip) {
             declareVariable($2, 0, 0.0);
             printf("Declare %s\n", $2);
         }
-        free($2);
+    }
+    |VAR IDENTIFIER {
+        yyerror("Missing semicolon at end of statement");
+    }
+    |VAR IDENTIFIER ASSIGN expression
+    {
+        yyerror("Missing semicolon at end of statement");
     }
     ;
 
@@ -143,7 +146,10 @@ assignment:
             setVariableValue($1, $3);
             printf("Assign %s = %f\n", $1, $3);
         }
-        free($1);
+    }
+    |IDENTIFIER ASSIGN expression
+    {
+        yyerror("Missing semicolon at end of statement");
     }
     ;
 
@@ -227,21 +233,21 @@ factor:
 
 void yyerror(const char *s) {
     error_count++;
-    printf("Error occurred at line: %d\n", yylineno);
-    fprintf(stderr, "%s (Unexpected token: '%s')\n", s, yytext);
+    fprintf(stderr, "Error occurred at line: %d\n%s (Unexpected token: '%s')\n", yylineno, s, yytext);
+    
     long pos = ftell(yyin);
-    fseek(yyin, 0, SEEK_SET); 
+    fseek(yyin, 0, SEEK_SET);
     char line[256] = {0};
-    int curr_line = 1;
-    while (curr_line < yylineno && fgets(line, sizeof(line), yyin)) {
-        curr_line++;
+    for (int i = 1; i < yylineno; i++) {
+        if (!fgets(line, sizeof(line), yyin))
+            break;
     }
-    if (curr_line == yylineno && fgets(line, sizeof(line), yyin)) {
-        char *pos_in_line = strstr(line, yytext);
-        if (pos_in_line) {
-            int offset = pos_in_line - line;
-            printf("Error at character offset: %d\n", offset);
-            printf("\n");
+    if (fgets(line, sizeof(line), yyin)) {
+        fprintf(stderr, "Line %d: %s \n", yylineno, line);
+        char *p = strstr(line, yytext);
+        if (p) {
+            int offset = (int)(p - line);
+            fprintf(stderr, "Error at character offset: %d\n", offset);
         }
     }
     fseek(yyin, pos, SEEK_SET);
@@ -253,21 +259,18 @@ void yyerror(const char *s) {
 
 int main(int argc, char *argv[]) {
     if (argc > 1) {
-        yyin = fopen(argv[1], "r");
-        if (!yyin) {
-            perror(argv[1]);
-            return 1;
-        }
+        yyin = fopen(argv[1], "r");        
     }
-    
+    else
+    {    yyin=stdin;    }
     yyparse();
     
     int lex_errors = report_lexical_errors();
     
-    if (error_count > 0) {
-        printf("\nCompilation failed with %d lexical errors and %d syntax errors", lex_errors, error_count);
+    if (error_count+lex_errors > 0) {
+        printf("\n Compilation failed with %d lexical errors and %d syntax errors", lex_errors, error_count);
     } else {
-        printf("\nCompilation successful.\n");
+        printf("\n Compilation successful.\n");
     }
     
     return (error_count + lex_errors > 0) ? 1 : 0;
